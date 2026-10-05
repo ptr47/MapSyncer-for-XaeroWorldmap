@@ -92,7 +92,7 @@ public final class PropertiesCacheIO {
                 props.store(os, header != null ? header : "Cache file");
             }
 
-            LOGGER.info("Saved {} entries to cache file: {}", cache.size(), cacheFile.getFileName());
+            LOGGER.debug("Saved {} entries to cache file: {}", cache.size(), cacheFile.getFileName());
         } catch (IOException e) {
             LOGGER.error("Failed to save cache file: {}", cacheFile, e);
         }

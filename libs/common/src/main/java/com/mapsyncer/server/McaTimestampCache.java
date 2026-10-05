@@ -75,7 +75,7 @@ public class McaTimestampCache {
      */
     private void loadCache() {
         if (!Files.exists(cacheFilePath)) {
-            LOGGER.info("No existing timestamp cache found, will create new one");
+            LOGGER.debug("No existing timestamp cache found, will create new one");
             return;
         }
 
@@ -139,7 +139,7 @@ public class McaTimestampCache {
             Files.move(tempFile, cacheFilePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
             int totalRegions = timestampCache.values().stream().mapToInt(Map::size).sum();
-            LOGGER.info("Saved timestamp cache: {} dimensions, {} regions to {}",
+            LOGGER.debug("Saved timestamp cache: {} dimensions, {} regions to {}",
                 timestampCache.size(), totalRegions, cacheFilePath);
         } catch (IOException e) {
             LOGGER.error("Failed to save timestamp cache", e);
@@ -197,7 +197,7 @@ public class McaTimestampCache {
         long currentSeconds = currentTimestamp / 1000;
         long cachedSeconds = cachedTimestamp / 1000;
         if (currentSeconds > cachedSeconds) {
-            LOGGER.info("Region {} in {} has been updated (cached={}s, current={}s), will regenerate",
+            LOGGER.debug("Region {} in {} has been updated (cached={}s, current={}s), will regenerate",
                 regionKey, dimension, cachedSeconds, currentSeconds);
             return true;  // 文件已更新
         }
@@ -304,7 +304,7 @@ public class McaTimestampCache {
                 needsRegeneration.add(coords);
                 dimCache.put(regionKey, currentTimestamp);
                 if (cachedTimestamp != null) {
-                    LOGGER.info("Detected update in {} / {}: cached={}s, current={}s",
+                    LOGGER.debug("Detected update in {} / {}: cached={}s, current={}s",
                             dimension, regionKey, cachedSeconds, currentSeconds);
                 }
             }

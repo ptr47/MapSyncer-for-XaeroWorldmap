@@ -208,7 +208,7 @@ public class MapPacketHandler {
         syncFinishOutcome = SyncOutcome.NONE;
         syncFinishTsCache = null;
         pendingWriteApplyCallbacks.set(0);
-        LOGGER.info("Cleared sync data to prevent memory leak");
+        LOGGER.debug("Cleared sync data to prevent memory leak");
     }
 
     /**
@@ -733,30 +733,27 @@ public class MapPacketHandler {
      */
     private static boolean initializeReflectionCache() {
         if (XaeroReflectionHelper.isInitialized()) {
-            LOGGER.debug("反射缓存已初始化，跳过重复初始化");
+            LOGGER.debug("Reflection cache is already initialized; skipping reinitialization");
             return true;
         }
 
-        LOGGER.info("开始初始化反射 API 缓存...");
+        LOGGER.debug("Initializing reflection API cache...");
         boolean initSuccess = XaeroReflectionHelper.initialize();
 
         if (initSuccess) {
-            LOGGER.info("XaeroReflectionHelper 初始化成功");
+            LOGGER.debug("Xaero reflection helper initialized");
             boolean regionDetectSuccess = XaeroReflectionHelper.setRegionDetectionComplete(true);
             if (regionDetectSuccess) {
-                LOGGER.info("regionDetectionComplete 设置为 true，反射功能就绪");
+                LOGGER.debug("Region detection marked complete; reflection integration is ready");
             } else {
-                LOGGER.warn("regionDetectionComplete 设置失败，getLeafMapRegion 可能会返回 null");
+                LOGGER.warn("Failed to mark region detection complete; getLeafMapRegion may return null");
             }
             return true;
         }
 
-        LOGGER.error("XaeroReflectionHelper 初始化失败！反射功能完全不可用");
-        LOGGER.error("可能原因：");
-        LOGGER.error("  1. Xaero's World Map 模组未安装");
-        LOGGER.error("  2. Xaero 版本与 MapSyncer 不兼容");
-        LOGGER.error("  3. 类加载器问题");
-        LOGGER.error("地图同步功能将无法正常工作，数据会写入文件但不会触发重新加载");
+        LOGGER.error("Failed to initialize Xaero reflection helper; reflection integration is unavailable");
+        LOGGER.error("Possible causes: Xaero's World Map is not installed, its version is incompatible, or a classloader issue occurred");
+        LOGGER.error("Map data will still be written to disk, but Xaero regions may not reload automatically");
         return false;
     }
 
@@ -787,7 +784,7 @@ public class MapPacketHandler {
             String regionWorldId = XaeroReflectionHelper.getWorldId(mapRegion);
             String regionDimId = XaeroReflectionHelper.getDimId(mapRegion);
             String regionMwId = XaeroReflectionHelper.getMwId(mapRegion);
-            LOGGER.info("Region ({}, {}) 属性: worldId={}, dimId={}, mwId={}, lastMwDir={}",
+            LOGGER.debug("Region ({}, {}) metadata: worldId={}, dimId={}, mwId={}, lastMwDir={",
                 coord.x(), coord.z(), regionWorldId, regionDimId, regionMwId, lastMwDir);
 
             if (!XaeroReflectionHelper.prepareRegionLoad(mapRegion)) {

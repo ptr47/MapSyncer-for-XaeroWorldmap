@@ -113,7 +113,7 @@ public class ClientHashManager {
                     // 创建新的 pool
                     sharedPool = new ForkJoinPool(configuredThreads);
                     currentPoolThreads = configuredThreads;
-                    LOGGER.info("Created new ForkJoinPool with {} threads (configured via client settings)", configuredThreads);
+                    LOGGER.debug("Created new ForkJoinPool with {} threads (configured via client settings)", configuredThreads);
                 }
             }
         }
@@ -184,7 +184,7 @@ public class ClientHashManager {
         // Load cached timestamps from previous sync
         ClientTimestampCache tsCache = ClientTimestampCache.getInstance(serverDir);
         Map<String, TimestampHashEntry> cachedTimestamps = tsCache.getAll();
-        LOGGER.info("Loaded {} cached timestamps from previous sync", cachedTimestamps.size());
+        LOGGER.debug("Loaded {} cached timestamps from previous sync", cachedTimestamps.size());
 
         // Collect all zip files from the specified directory (not entire server)
         java.util.List<Path> zipFiles;
@@ -196,7 +196,7 @@ public class ClientHashManager {
             return MetaScanResult.failure("walk_error", 0);
         }
 
-        LOGGER.info("Computing hashes for {} region files in {} (parallel threads={})", zipFiles.size(), mapDir, currentPoolThreads);
+        LOGGER.debug("Computing hashes for {} region files in {} (parallel threads={})", zipFiles.size(), mapDir, currentPoolThreads);
 
         if (reportProgress && !zipFiles.isEmpty()) {
             SyncProgressTracker.startHashScan(zipFiles.size());
@@ -305,7 +305,7 @@ public class ClientHashManager {
             for (String prefix : dimPrefixes) {
                 if (key.startsWith(prefix)) {
                     metaMap.put(key, new ClientMeta(entry.getValue().timestampSeconds(), HashUtils.DEFAULT_HASH));
-                    LOGGER.warn("Region {} in cache but file missing, will request re-sync", key);
+                    LOGGER.debug("Region {} in cache but file missing, will request re-sync", key);
                     break;
                 }
             }

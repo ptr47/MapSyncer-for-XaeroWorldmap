@@ -136,7 +136,6 @@ public class RegionScanner {
                 return regionDir.toRealPath();
             }
 
-            LOGGER.warn("Region directory not found for dimension {} after detection", dimId);
             return null;
         } catch (IOException e) {
             LOGGER.error("Failed to get region directory", e);
@@ -161,7 +160,7 @@ public class RegionScanner {
         Path regionDir = mapping.detectRegionDir(worldRoot, dimId);
 
         if (regionDir == null || !Files.exists(regionDir)) {
-            LOGGER.warn("Region directory not found for dimension: {}", dimId);
+            LOGGER.debug("Region directory not found for dimension: {}", dimId);
             return new RegionScanResult(List.of(), 0, List.of());
         }
 
@@ -258,7 +257,7 @@ public class RegionScanner {
         }
 
         if (skippedEmpty > 0) {
-            LOGGER.info("Skipped {} empty (0KB) MCA files in {}", skippedEmpty, regionDir);
+            LOGGER.debug("Skipped {} empty (0KB) MCA files in {}", skippedEmpty, regionDir);
         }
 
         return new RegionScanResult(regions, skippedEmpty, fileEntries);

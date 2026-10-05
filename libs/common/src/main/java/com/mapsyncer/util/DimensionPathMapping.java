@@ -252,7 +252,7 @@ public class DimensionPathMapping {
         // 5. 备用：尝试传统 DIM{id} 格式（部分旧 mod 可能使用）
         // 动态检测，不预设映射
 
-        LOGGER.warn("Could not detect region directory for dimension: {}", normalized);
+        LOGGER.debug("No region directory found yet for dimension: {}", normalized);
         return null;
     }
 

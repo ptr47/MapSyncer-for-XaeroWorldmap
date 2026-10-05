@@ -19,6 +19,17 @@ repositories {
     mavenCentral()
     maven { url = 'https://maven.neoforged.net/releases' }
     maven { url = 'https://maven.aliyun.com/repository/public' }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 neoForge {
@@ -42,6 +53,8 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet sourceSets.main
+            sourceSet project(':libs:platform-api').sourceSets.main
+            sourceSet project(':libs:core').sourceSets.main
         }
     }
 }
@@ -59,6 +72,10 @@ dependencies {
     // 依赖核心模块
     implementation project(':libs:core')
     implementation project(':libs:platform-api')
+
+    // Xaero APIs for development and compilation; these mods are not bundled into the MapSyncer jar.
+    implementation "maven.modrinth:xaeros-minimap:Q1tuMQBB"
+    implementation "maven.modrinth:xaeros-world-map:9Ckiihkz"
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -92,10 +109,13 @@ shadowJar {
     configureLz4ShadowExcludes(it)
 }
 
-// 重新配置 jar 任务依赖 shadowJar
+// Distribute the shadowJar with bundled internal dependencies; do not create a slim jar that omits them.
 tasks.named('jar') {
-    archiveClassifier.set('slim')
-    dependsOn shadowJar
+    enabled = false
+}
+
+tasks.named('assemble') {
+    dependsOn tasks.named('shadowJar')
 }
 
 // 禁用 jarJar（使用 shadowJar 替代）

@@ -121,7 +121,7 @@ public final class XaeroReflectionHelper {
         if (initialized) return true;
 
         try {
-            LOGGER.info("开始初始化 Xaero 反射缓存...");
+            LOGGER.debug("Starting Xaero reflection cache initialization...");
 
             // 加载 Xaero 类
             LOGGER.debug("加载 Xaero 核心类...");
@@ -136,7 +136,6 @@ public final class XaeroReflectionHelper {
             mapLayerClass = Class.forName("xaero.map.region.MapLayer");
             leveledRegionManagerClass = Class.forName("xaero.map.region.LeveledRegionManager");
             branchLeveledRegionClass = Class.forName("xaero.map.region.BranchLeveledRegion");
-            LOGGER.info("成功加载 {} 个 Xaero 类", 11);
 
             // 缓存方法
             LOGGER.debug("获取并缓存反射方法...");
@@ -158,7 +157,6 @@ public final class XaeroReflectionHelper {
             getLayeredMapRegionsMethod = mapDimensionClass.getMethod("getLayeredMapRegions");
             getLayerMethod = layeredRegionManagerClass.getMethod("getLayer", int.class);
             getMapRegionsMethod = mapLayerClass.getMethod("getMapRegions");
-            LOGGER.info("成功缓存 {} 个反射方法", 13);
 
             // 缓存字段
             LOGGER.debug("获取并缓存反射字段...");
@@ -180,7 +178,6 @@ public final class XaeroReflectionHelper {
             regionTextureMapField.setAccessible(true);
             childrenField = branchLeveledRegionClass.getDeclaredField("children");
             childrenField.setAccessible(true);
-            LOGGER.info("成功缓存 {} 个反射字段", 9);
 
             initialized = true;
             LOGGER.info("Xaero reflection helper initialized successfully");
@@ -516,7 +513,7 @@ public final class XaeroReflectionHelper {
         cachedSession = null;
         cachedMapProcessor = null;
         cachedMapSaveLoad = null;
-        LOGGER.info("Xaero reflection cache cleared");
+        LOGGER.debug("Xaero reflection cache cleared");
     }
 
     /**

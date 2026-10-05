@@ -108,7 +108,7 @@ public class ClientTimestampCache {
                 if (instance == null || lastBaseDir == null || !lastBaseDir.equals(baseDir)) {
                     instance = new ClientTimestampCache(baseDir);
                     lastBaseDir = baseDir;
-                    LOGGER.info("ClientTimestampCache initialized for baseDir: {}", baseDir);
+                    LOGGER.debug("ClientTimestampCache initialized for baseDir: {}", baseDir);
                 }
             }
         }
@@ -123,7 +123,7 @@ public class ClientTimestampCache {
             instance.cache.clear();
             instance = null;
             lastBaseDir = null;
-            LOGGER.info("ClientTimestampCache instance reset");
+            LOGGER.debug("ClientTimestampCache instance reset");
         }
     }
 
@@ -164,7 +164,7 @@ public class ClientTimestampCache {
                 }
             }
 
-            LOGGER.info("Loaded cache: state={}, regions={}, file={}", syncState, cache.size(), cacheFile.getFileName());
+            LOGGER.debug("Loaded cache: state={}, regions={}, file={}", syncState, cache.size(), cacheFile.getFileName());
         } catch (IOException e) {
             LOGGER.warn("Failed to load cache file: {}", e.getMessage());
             syncState = null;

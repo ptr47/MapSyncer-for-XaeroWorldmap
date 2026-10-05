@@ -55,16 +55,13 @@ public class MapSyncer {
         // 初始化 Platform（NeoForge 1.21 实现）
         PlatformManager.initialize(new NeoForgePlatform());
         LOGGER.info("Platform initialized: {}", PlatformManager.getPlatform().getPlatformName());
-
         // 初始化 DimensionPathMapping（1.21.X 使用传统格式）
         DimensionPathMapping.getInstance().initialize(21);
         LOGGER.info("DimensionPathMapping initialized for version 1.21.X");
-
         // 初始化 NetworkManager（NeoForge 网络实现）
         networkHandler = new NeoForgeNetworkHandler();
         NetworkManager.initialize(networkHandler);
         LOGGER.info("NetworkManager initialized");
-
         modContainer.registerConfig(Type.SERVER, ModConfig.SERVER_SPEC);
         modContainer.registerConfig(Type.CLIENT, ModConfig.CLIENT_SPEC);
         modBus.addListener((net.neoforged.fml.event.config.ModConfigEvent.Loading event) ->

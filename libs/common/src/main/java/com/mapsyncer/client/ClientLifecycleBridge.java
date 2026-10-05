@@ -34,6 +34,6 @@ public final class ClientLifecycleBridge {
         ClientSyncWriteQueue.shutdown();
         RegionPipelineTracker.endSession();
         ClientTimestampCache.resetInstance();
-        LOGGER.info("Client disconnected, all resources cleaned up");
+        LOGGER.debug("Client disconnected; resources cleaned up");
     }
 }
